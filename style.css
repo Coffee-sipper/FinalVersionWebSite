@@ -1,0 +1,382 @@
+/* © 2026 Kinane. All Rights Reserved. */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #090c12;
+  --panel: #10141e;
+  --panel-2: #141a26;
+  --line: rgba(255, 255, 255, 0.08);
+  --text: #eef1f7;
+  --muted: #8891a3;
+  --cyan: #38bdf8;
+  --blue: #3b5bff;
+  --grad: linear-gradient(135deg, var(--cyan), var(--blue));
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Scroll animation: element starts hidden + shifted down,
+   JS adds "is-visible" when it scrolls into view */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#particle-canvas {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 0;
+  pointer-events: none;
+}
+
+.main-container {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 6vw;
+  background: rgba(9, 12, 18, 0.7);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  height: 36px;
+  width: auto;
+}
+
+.notch-sm {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+.nav-button{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.05rem;
+  padding:9px 18px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--text);
+  transition: 0.2s ease;
+}
+
+.nav-button:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
+.nav-item {
+  position: relative;
+  transition: color 0.2s;
+  font-size: 1.05rem;
+  padding: 4px 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-name{
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: 0.3px;
+}
+
+.nav-item:hover {
+  color: white;
+}
+
+.nav-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background: var(--grad);
+  transition: width 0.25s ease;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
+
+.nav-links{
+  display:flex;
+  gap:36px;
+  font-size: 0.88rem;
+  color:var(--muted);
+  cursor: pointer;
+}
+.nav-button:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  cursor: pointer;
+}
+
+.nav-container.scrolled {
+  background: rgba(9, 12, 18, 0.85);
+  backdrop-filter: blur(15px);
+}
+
+.hero-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  margin-left: 3vw;
+  margin-top: 120px;
+  color: var(--cyan);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-title::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan);
+  animation: pulse 2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.hero-highlight{
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-heading {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: clamp(3rem, 5vw, 4.6rem);
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  max-width: 14ch;
+  margin-left: 3vw;
+  margin-top: 49px;
+}
+
+.hero-subheading {
+  max-width: 550px;
+  line-height: 1.7;
+  color: var(--muted);
+  font-size: 1.02rem;
+  margin-left: 3vw;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  margin-left: 3vw;
+  margin-top: 48px;
+  margin-bottom: 90px;
+}
+
+.hero-button1 {
+  position: relative;
+  overflow: hidden;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding: 14px 26px;
+  background: var(--grad);
+  color: #050810;
+  transition: transform 0.2s;
+}
+
+.hero-button2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding: 14px 26px;
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: var(--panel);
+  transition: transform 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.hero-button1,
+.hero-button2 {
+  clip-path: polygon(
+    12px 0,
+    100% 0,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    0 100%,
+    0 12px
+  );
+}
+
+.hero-button1:hover {
+  transform: translateY(-2px);
+  border-color: var(--cyan);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.25);
+  cursor: pointer;
+}
+
+.hero-button2:hover {
+  transform: translateY(-2px);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.15);
+  cursor: pointer;
+}
+
+.hero-button1 {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-button1::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.35);
+  transform: skewX(-20deg);
+  transition: left 0.55s ease;
+}
+
+.hero-button1:hover::after {
+  left: 130%;
+}
+
+.hero-line {
+  width: 32%;
+  height: 1px;
+  background: var(--line);
+  margin-left: 3vw;
+}
+
+.hero-footer {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  width: fit-content;
+  gap: 65px;
+  margin-left: 3vw;
+  margin-top: 48px;
+}
+
+.footer-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.projects , .time ,.Exp{
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 1.46rem;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.projects-text , .time-text ,.Exp-text{
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.98rem;
+  color: var(--muted);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.hero-visual {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  width: 58%;
+  height: 96%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blue-diagonal {
+  width: 100%;
+  height: 70%;
+
+  background: rgba(1, 9, 34, 0.45);
+
+  clip-path: polygon(
+    25% 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blue-diagonal img {
+  width: 350px;
+  height: auto;
+  background: #111621;
+  border-radius: 50%;
+  padding: 25px;
+}
